@@ -14,10 +14,16 @@ There will be 4 sets of scripts:
 ## Lab1: How to run a pipeline
 
 1. Clone the repo:
-	git clone github.com:brain4power/mlops_labs.git
+
+	$ git clone github.com:brain4power/mlops_labs.git
+	
+2. Go to the directory of Lab1:
+
+	$ cd ./lab1
 	
 2. Run the shell script in UNIX-system:
-	./lab1/pepline.sh
+
+	$ bash ./pipeline.sh
 
 ## Authors:
 

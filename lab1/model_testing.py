@@ -1,17 +1,41 @@
-import numpy as np
 import pickle
-from sklearn.metrics import mean_squared_error as mse
+import logging
+from datetime import datetime
+
+import numpy as np
 from sklearn.metrics import r2_score
+from sklearn.metrics import mean_squared_error as mse
 
-if __name__ == '__main__':
-    model = pickle.load(open('./models/lin_reg.pkl', 'rb'))
+# Project
+from config import LOG_LEVEL, MODEL_PATH, Y_TEST_PATH, X_TEST_SCALED_PATH
 
-    x_test = np.load('./test/x_test_scaled.npy')
-    y_test = np.load('./test/y_train.npy')
+logging.basicConfig()
+logger = logging.getLogger(__name__)
+logger.setLevel(LOG_LEVEL)
+
+
+def test_model() -> dict:
+    with open(MODEL_PATH, "rb") as file:
+        model = pickle.load(file)
+
+    x_test = np.load(X_TEST_SCALED_PATH)
+    y_test = np.load(Y_TEST_PATH)
 
     y_pred = model.predict(x_test)
 
-    print('Ошибка на тестовых данных')
-    print('MSE: %.1f' % mse(y_test, y_pred))
-    print('RMSE: %.1f' % mse(y_test, y_pred, squared=False))
-    print('R2: %.4f' % r2_score(y_test, y_pred))
+    result = {"MSE": mse(y_test, y_pred), "RMSE": mse(y_test, y_pred, squared=False), "R2": r2_score(y_test, y_pred)}
+    return result
+
+
+if __name__ == "__main__":
+    start_time = datetime.now()
+    logger.info(f"Model testing started at {start_time}")
+    test_results = test_model()
+    logger.info(
+        f"""
+    Test results:
+    MSE: {test_results['MSE']:1f}
+    RMSE: {test_results['RMSE']:1f}
+    R2: {test_results['R2']:4f}
+    """
+    )
