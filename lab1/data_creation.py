@@ -60,13 +60,13 @@ def create_dataset() -> None:
         x,
         y,
     ) = dataset(
-        multiplier=-200, addend=200, math_function=np.abs, n_points=500, max_value=111.2, noise_power=0.3, seed=555
+        multiplier=-200, addend=200, math_function=np.abs, n_points=500, max_value=111.2, noise_power=0.1, seed=555
     )
 
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3)
 
-    os.mkdir(TRAIN_DIR)
-    os.mkdir(TEST_DIR)
+    os.makedirs(TRAIN_DIR, exist_ok=True)
+    os.makedirs(TEST_DIR, exist_ok=True)
 
     np.save(X_TRAIN_PATH, x_train)
     np.save(Y_TRAIN_PATH, y_train)
