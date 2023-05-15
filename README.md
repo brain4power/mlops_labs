@@ -4,7 +4,7 @@
 
 ## Repository Description
 
-**MLOps** consists of several sets of scripts for machine learning optimization.
+**MLOps Labs** consists of several sets of scripts for machine learning optimization.
 
 There will be 4 sets of scripts:
 - Lab1 consists of a pipeline that collects and preprosesses synthetic numerical data, creates and trains a linear regression model, and then tests its result.
