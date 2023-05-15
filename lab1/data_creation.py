@@ -48,8 +48,7 @@ def dataset(
         x_array = np.sort(np.random.rand(n_points)) * max_value
     else:
         x_array = np.linspace(0, max_value, n_points)
-    y_array = np.array([])
-    y_array = np.append(y_array, true_fun(x_array, multiplier, addend, math_function))
+    y_array = true_fun(x_array, multiplier, addend, math_function)
     y_array = y_array.reshape(-1, n_points).T
     new_y_array = y_array + noises(y_array.shape, noise_power)
     return np.atleast_2d(x_array).T, new_y_array
