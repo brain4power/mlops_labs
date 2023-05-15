@@ -3,7 +3,7 @@ import logging
 
 LOG_LEVEL = logging.INFO
 
-BASE_DIR = "./"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 TRAIN_DIR = os.path.join(BASE_DIR, "train")
 TEST_DIR = os.path.join(BASE_DIR, "test")
