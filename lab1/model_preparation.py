@@ -21,7 +21,7 @@ def prepare_model() -> None:
     model = LinearRegression(fit_intercept=True, n_jobs=-1)
     model.fit(x_train, y_train)
 
-    os.mkdir(MODEL_DIR)
+    os.makedirs(MODEL_DIR, exist_ok=True)
 
     with open(MODEL_PATH, "wb") as file:
         pickle.dump(model, file)
