@@ -8,7 +8,7 @@ Type=simple
 Restart=always
 TimeoutSec=300
 
-WorkingDirectory=/opt/aise
+WorkingDirectory=/opt/mlops_labs/lab3
 
 # Compose up
 ExecStart=docker compose -f docker-compose.yml up

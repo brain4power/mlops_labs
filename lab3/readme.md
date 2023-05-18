@@ -53,11 +53,11 @@ sudo su
 - [Configure Docker to start on boot with systemd](https://docs.docker.com/engine/install/linux-postinstall/#configure-docker-to-start-on-boot-with-systemd)
 - Clone repo:
 ```shell
-sudo git clone https://github.com/brain4power/ai_software_engineering.git /opt/aise
+sudo git clone https://github.com/brain4power/mlops_labs /opt/mlops_labs
 ```
 - build containers and start application
 ```shell
-cd /opt/aise
+cd /opt/mlops_labs/lab3
 docker compose up -d --build
 ```
 - enable the application to run on system boot
@@ -70,7 +70,8 @@ systemctl start aise.service
 #### Update server
 ```shell
 sudo su
-cd /opt/aise
+cd /opt/mlops_labs
 git pull
+cd lab3
 docker compose up -d --build
 ```
