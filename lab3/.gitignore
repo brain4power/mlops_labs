@@ -1,0 +1,8 @@
+__pycache__
+.DS_Store
+.idea
+*.pyc
+env/
+
+app/system-static/speechbrain/
+!app/system-static/speechbrain/.geetkeep
