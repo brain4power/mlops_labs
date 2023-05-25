@@ -1,6 +1,8 @@
 import base64
 import io
+import operator
 import os
+from functools import reduce
 from typing import Optional
 
 import librosa
@@ -14,7 +16,12 @@ import streamlit as st
 from matplotlib import pyplot as plt
 from scipy.io import wavfile
 
-MAX_FILE_LEN = 1 * 1024 * 1024  # 1 MB
+
+def transform_and_mul_int(value: str) -> int:
+    return reduce(operator.mul, map(int, value.split("*")))
+
+
+MAX_FILE_SIZE = transform_and_mul_int(os.getenv("MAX_FILE_SIZE"))
 
 plt.rcParams["figure.figsize"] = (12, 10)
 
@@ -63,7 +70,7 @@ class AbstractOption:
         # TODO show error for user instead raise ValueError
         if self.file_mime_type not in self.mime_type_audio_command_map:
             raise ValueError
-        if len(self.file_bytes) > MAX_FILE_LEN:
+        if len(self.file_bytes) > MAX_FILE_SIZE:
             raise ValueError
 
     def call_api(self, url):
