@@ -245,7 +245,7 @@ def main():
         "# Processing of sound and speech by SpeechBrain framework\n"
         "### Select the processing procedure in the sidebar.\n"
         "Once you have chosen processing procedure, select or upload an audio file\n. "
-        'Then click "Apply" to start! \n\n'
+        "Then click 'Apply' to start! \n\n"
     )
     placeholder2.markdown("After clicking start,the result of the selected procedure are visualized.")
     options_map = {
