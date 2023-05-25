@@ -5,6 +5,7 @@ from typing import Any, Callable
 
 import numpy as np
 import pydub
+import resampy
 import torch
 from fastapi import APIRouter as FastAPIRouter
 from fastapi import File, UploadFile, HTTPException
@@ -36,7 +37,10 @@ class APIRouter(FastAPIRouter):
         return decorator
 
 
-async def handle_uploaded_audio_file(file: UploadFile, sample_rate=settings.AUDIO_RATE):
+async def handle_uploaded_audio_file(
+        file: UploadFile,
+        sample_rate=settings.AUDIO_RATE
+) -> tuple:
     # validation
     VALID_AUDIO_TYPES = {"audio/wav", "audio/mpeg", "audio/x-wav"}
     if file.content_type not in VALID_AUDIO_TYPES:
@@ -50,13 +54,14 @@ async def handle_uploaded_audio_file(file: UploadFile, sample_rate=settings.AUDI
 
     # transform data
     handler = pydub.AudioSegment.from_file(io.BytesIO(file_data))
+    base_rate = handler.frame_rate
     source = handler.set_frame_rate(sample_rate).set_channels(1).get_array_of_samples()
     fp_arr = np.array(source).astype(np.float32) / np.iinfo(source.typecode).max
-    return torch.FloatTensor(fp_arr[np.newaxis, :]), torch.tensor([1.0])
+    return torch.FloatTensor(fp_arr[np.newaxis, :]), torch.tensor([1.0]), base_rate, sample_rate
 
 
 async def speech2text(file: UploadFile):
-    batch, rel_length = await handle_uploaded_audio_file(file)
+    batch, rel_length, _, _ = await handle_uploaded_audio_file(file)
 
     asr_model_save_dir = os.path.join(settings.SB_PRETRAINED_MODELS_FOLDER, "asr-wav2vec2-commonvoice-en")
     asr_model = EncoderDecoderASR.from_hparams(
@@ -69,7 +74,7 @@ async def speech2text(file: UploadFile):
 
 
 async def speech_enhancement(file: UploadFile):
-    batch, rel_length = await handle_uploaded_audio_file(file)
+    batch, rel_length, base_rate, result_rate = await handle_uploaded_audio_file(file)
 
     enhancer_model_save_dir = os.path.join(settings.SB_PRETRAINED_MODELS_FOLDER, "metricgan-plus-voicebank")
     enhancer = SpectralMaskEnhancement.from_hparams(
@@ -77,7 +82,12 @@ async def speech_enhancement(file: UploadFile):
     )
     enhanced = enhancer.enhance_batch(batch, rel_length)
     enhanced = enhanced.cpu().numpy()
-    return base64.b64encode(enhanced.tobytes())
+    result = resampy.resample(enhanced, result_rate, base_rate, axis=0, filter="kaiser_best")
+    return base64.b64encode(result.tobytes())
+
+
+def _resample(source, origin_rate: int, target_rate: int):
+    return resampy.resample(source, origin_rate, target_rate, axis=0, filter="kaiser_best")
 
 
 async def separate_audio_files(file: UploadFile = File(...)):
@@ -85,8 +95,8 @@ async def separate_audio_files(file: UploadFile = File(...)):
         source="speechbrain/sepformer-whamr",
         savedir="pretrained_models/sepformer-whamr",
     )
-
-    batch, rel_length = await handle_uploaded_audio_file(file, settings.SEPFORMER_WHAMR_RATE)
+    result_rate = settings.SEPFORMER_WHAMR_RATE
+    batch, rel_length, base_rate, _ = await handle_uploaded_audio_file(file, settings.SEPFORMER_WHAMR_RATE)
 
     sources = model.separate_batch(batch)
     sources = sources.cpu().detach().numpy()
@@ -94,7 +104,8 @@ async def separate_audio_files(file: UploadFile = File(...)):
     return [
         {
             "order": i,
-            "file": base64.b64encode(sources[:, :, i].tobytes())
+            "file": base64.b64encode(_resample(sources[:, :, i], result_rate, base_rate).tobytes()),
+            "rate": base_rate,
         }
         for i in range(sources.shape[2])
     ]

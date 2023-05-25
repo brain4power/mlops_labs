@@ -1,5 +1,4 @@
 librosa==0.9.2
-resampy==0.4.2
 pydub==0.25.1
 numpy==1.23.4
 scipy==1.9.3

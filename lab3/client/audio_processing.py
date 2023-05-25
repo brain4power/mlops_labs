@@ -11,7 +11,6 @@ import magic
 import numpy as np
 import pydub
 import requests
-import resampy
 import streamlit as st
 from matplotlib import pyplot as plt
 from scipy.io import wavfile
@@ -24,9 +23,6 @@ def transform_and_mul_int(value: str) -> int:
 MAX_FILE_SIZE = transform_and_mul_int(os.getenv("MAX_FILE_SIZE"))
 
 plt.rcParams["figure.figsize"] = (12, 10)
-
-SAMPLE_RATE = int(os.getenv("AUDIO_RATE"))
-SAMPLE_RATE_SEPARATE = 8000
 
 endpoint_enhancement = os.getenv("API_ENHANCEMENT_URI")
 endpoint_recognition = os.getenv("API_RECOGNITION_URI")
@@ -100,8 +96,7 @@ class AbstractOption:
         fp_arr = np.array(samples).T.astype(np.float32)
         fp_arr /= np.iinfo(samples[0].typecode).max
         source, sample_rate = fp_arr[:, 0], audio.frame_rate
-        source = resampy.resample(source, sample_rate, SAMPLE_RATE, axis=0, filter="kaiser_best")
-        return source, SAMPLE_RATE
+        return source, sample_rate
 
     @staticmethod
     def draw_audio_player(source, sample_rate):
@@ -150,11 +145,12 @@ class SpeechSeparation(AbstractOption):
         separated_file.sort(key=lambda x: x.get("order"))
         for i, source in enumerate(separated_file):
             result = source["file"]
+            rate = source["rate"]
             result = result.encode(encoding="UTF-8")
             buff = base64.decodebytes(result)
             sound = np.frombuffer(buff, dtype=np.float32)
             in_memory_file = io.BytesIO()
-            wavfile.write(in_memory_file, rate=SAMPLE_RATE_SEPARATE, data=sound)
+            wavfile.write(in_memory_file, rate=rate, data=sound)
             st.write(f"part: {i + 1}")
             st.audio(in_memory_file)
             st.markdown("---")
