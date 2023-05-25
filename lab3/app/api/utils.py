@@ -76,7 +76,7 @@ async def speech_enhancement(file: UploadFile):
         source="speechbrain/metricgan-plus-voicebank", savedir=enhancer_model_save_dir
     )
     enhanced = enhancer.enhance_batch(batch, rel_length)
-    enhanced = enhanced.cpu().detach().numpy()
+    enhanced = enhanced.cpu().numpy()
     return base64.b64encode(enhanced.tobytes())
 
 
