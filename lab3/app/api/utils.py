@@ -82,7 +82,7 @@ async def speech_enhancement(file: UploadFile):
     )
     enhanced = enhancer.enhance_batch(batch, rel_length)
     enhanced = enhanced.cpu().numpy()
-    result = resampy.resample(enhanced, result_rate, base_rate, axis=0, filter="kaiser_best")
+    result = resampy.resample(enhanced[0], result_rate, base_rate, axis=0, filter="kaiser_best")
     return base64.b64encode(result.tobytes())
 
 
