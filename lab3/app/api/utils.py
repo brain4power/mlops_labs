@@ -73,6 +73,10 @@ async def speech2text(file: UploadFile):
     return " ".join(token for token in result[0])
 
 
+def _resample(source, origin_rate: int, target_rate: int):
+    return resampy.resample(source, origin_rate, target_rate, axis=0, filter="kaiser_best")
+
+
 async def speech_enhancement(file: UploadFile):
     batch, rel_length, base_rate, result_rate = await handle_uploaded_audio_file(file)
 
@@ -82,12 +86,8 @@ async def speech_enhancement(file: UploadFile):
     )
     enhanced = enhancer.enhance_batch(batch, rel_length)
     enhanced = enhanced.cpu().numpy()
-    result = resampy.resample(enhanced[0], result_rate, base_rate, axis=0, filter="kaiser_best")
+    result = _resample(enhanced[0], result_rate, base_rate)
     return base64.b64encode(result.tobytes())
-
-
-def _resample(source, origin_rate: int, target_rate: int):
-    return resampy.resample(source, origin_rate, target_rate, axis=0, filter="kaiser_best")
 
 
 async def separate_audio_files(file: UploadFile = File(...)):
