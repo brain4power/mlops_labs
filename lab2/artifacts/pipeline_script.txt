@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scmGit(branches: [[name: '*/lab2']], extensions: [], userRemoteConfigs: [[credentialsId: '88f6cf3d-8972-47f0-985d-3cf7a876b8a1', url: 'https://github.com/brain4power/mlops_labs']])
+            }
+        }
+        stage('Build') {
+            steps {
+                git branch: 'lab2', credentialsId: '88f6cf3d-8972-47f0-985d-3cf7a876b8a1', url: 'https://github.com/brain4power/mlops_labs'
+                sh 'python3 ./lab2/data_creation.py'
+                sh 'python3 ./lab2/data_preprocessing.py'
+                sh 'python3 ./lab2/model_preparation.py'
+                sh 'python3 ./lab2/model_testing.py'
+            }
+        }
+        stage('Archive_Artifacts') {
+            steps {
+                archiveArtifacts artifacts: 'lab2/**', followSymlinks: false
+            }
+        }
+        stage('Clean') {
+            steps {
+                sh 'python3 ./lab2/cleaner.py'
+            }
+        }
+    }
+}
+
