@@ -26,6 +26,9 @@ There will be 4 sets of scripts:
 
 	$ bash ./pipeline.sh
 
+## Lab3:
+Follow the internal [Readme](lab3/readme.md)
+
 ## Authors:
 
 - Aleksei Gukov ([brain4power](https://github.com/brain4power))
