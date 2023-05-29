@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('build') {
           steps {
-            sh 'pip install -r lab2/jenkins/ml_pipeline/requirements.txt'
+            sh 'python3 -m pip install lab2/jenkins/ml_pipeline/requirements.txt'
           }
         }
         stage('Create data') {
