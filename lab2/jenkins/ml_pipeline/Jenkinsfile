@@ -44,7 +44,7 @@ pipeline {
         }
         stage('Archive artifacts') {
             steps {
-                archiveArtifacts artifacts: 'lab2/jenkins/ml_pipeline/models', followSymlinks: false
+                archiveArtifacts artifacts: 'lab2/jenkins/ml_pipeline/models/*.*', followSymlinks: false
             }
         }
         stage('Cleaning') {
