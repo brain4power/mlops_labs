@@ -38,11 +38,13 @@ pipeline {
         stage('info2') {
             steps {
                 sh 'ls'
+                sh 'ls lab2'
+                sh 'ls lab2/jenkins/ml_pipeline'
             }
         }
         stage('Archive artifacts') {
             steps {
-                archiveArtifacts artifacts: 'models', followSymlinks: false
+                archiveArtifacts artifacts: 'lab2/jenkins/ml_pipeline/models', followSymlinks: false
             }
         }
         stage('Cleaning') {
