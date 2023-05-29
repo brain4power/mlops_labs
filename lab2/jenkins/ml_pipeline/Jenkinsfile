@@ -4,6 +4,12 @@ pipeline {
         HOME = "${env.WORKSPACE}"
     }
     stages {
+        stage('info') {
+            steps {
+                sh 'ls'
+                sh 'pwd'
+            }
+        }
         stage('install requirements') {
             steps {
                 sh 'pip install -r lab2/jenkins/ml_pipeline/requirements.txt'
