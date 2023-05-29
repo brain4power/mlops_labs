@@ -1,15 +1,17 @@
 pipeline {
-    agent any
-
+    agent { docker { image 'python:3.10.10-alpine' } }
+    environment {
+        HOME = "${env.WORKSPACE}"
+    }
     stages {
-        stage('build') {
-          steps {
-            sh 'python3 -m pip install lab2/jenkins/ml_pipeline/requirements.txt'
-          }
+        stage('install requirements') {
+            steps {
+                sh 'pip install -r requirements.txt'
+            }
         }
         stage('Create data') {
             steps {
-                sh 'python3 lab2/jenkins/ml_pipeline/data_creation.py'
+                sh 'python3 data_creation.py'
             }
         }
     }
