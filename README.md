@@ -9,7 +9,7 @@
 There will be 4 sets of scripts:
 - Lab1 consists of a pipeline that collects and preprosesses synthetic numerical data, creates and trains a linear regression model, and then tests its result.
 - Lab2 (soon)
-- Lab3 (soon)
+- Lab3 consists of an application that processes sound files. Three functions: recognition, enhancement and separation. The application consists of backend and frontend parts, runs using Docker.
 - Lab4 (soon)
 
 ## Lab1: How to run a pipeline
@@ -25,6 +25,9 @@ There will be 4 sets of scripts:
 2. Run the shell script in UNIX-system:
 
 	$ bash ./pipeline.sh
+
+## Lab3:
+Follow the internal [Readme](lab3/readme.md)
 
 ## Authors:
 
