@@ -1,0 +1,43 @@
+pipeline {
+    agent { docker { image 'python:3.10.10' } }
+    environment {
+        HOME = "${env.WORKSPACE}"
+    }
+    stages {
+        stage('install requirements') {
+            steps {
+                sh 'pip install -r lab2/requirements.txt'
+            }
+        }
+        stage('Create data') {
+            steps {
+                sh 'python3 lab2/data_creation.py'
+            }
+        }
+        stage('Preprocessing data') {
+            steps {
+                sh 'python3 lab2/data_preprocessing.py'
+            }
+        }
+        stage('Prepare model') {
+            steps {
+                sh 'python3 lab2/model_preparation.py'
+            }
+        }
+        stage('Test model') {
+            steps {
+                sh 'python3 lab2/model_testing.py'
+            }
+        }
+        stage('Archive artifacts') {
+            steps {
+                archiveArtifacts artifacts: 'lab2/models/*.*', followSymlinks: false
+            }
+        }
+        stage('Cleaning') {
+            steps {
+                sh 'python3 lab2/cleaner.py'
+            }
+        }
+    }
+}
