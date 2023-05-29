@@ -1,5 +1,5 @@
 pipeline {
-    agent { docker { image 'python:3.10.10-alpine' } }
+    agent { docker { image 'python:3.10.10' } }
     environment {
         HOME = "${env.WORKSPACE}"
     }
@@ -18,6 +18,31 @@ pipeline {
         stage('Create data') {
             steps {
                 sh 'python3 lab2/jenkins/ml_pipeline/data_creation.py'
+            }
+        }
+        stage('Preprocessing data') {
+            steps {
+                sh 'python3 lab2/jenkins/ml_pipeline/data_preprocessing.py'
+            }
+        }
+        stage('Prepare model') {
+            steps {
+                sh 'python3 lab2/jenkins/ml_pipeline/model_preparation.py'
+            }
+        }
+        stage('Test model') {
+            steps {
+                sh 'python3 lab2/jenkins/ml_pipeline/model_testing.py'
+            }
+        }
+        stage('Archive artifacts') {
+            steps {
+                archiveArtifacts artifacts: 'lab2/models/**', followSymlinks: false
+            }
+        }
+        stage('Cleaning') {
+            steps {
+                sh 'python3 lab2/jenkins/ml_pipeline/cleaner.py'
             }
         }
     }
