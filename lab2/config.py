@@ -3,9 +3,7 @@ import os
 
 LOG_LEVEL = logging.INFO
 
-DATA_PATH = (
-    "https://raw.githubusercontent.com/tidyverse/ggplot2/main/data-raw/diamonds.csv"
-)
+DATA_URI = "https://raw.githubusercontent.com/tidyverse/ggplot2/main/data-raw/diamonds.csv"
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 

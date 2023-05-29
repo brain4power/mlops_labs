@@ -5,7 +5,7 @@ from datetime import datetime
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-from config import (DATA_PATH, LOG_LEVEL, TEST_DIR, TRAIN_DIR, X_TEST_PATH,
+from config import (DATA_URI, LOG_LEVEL, TEST_DIR, TRAIN_DIR, X_TEST_PATH,
                     X_TRAIN_PATH, Y_TEST_PATH, Y_TRAIN_PATH)
 
 logging.basicConfig()
@@ -14,7 +14,7 @@ logger.setLevel(LOG_LEVEL)
 
 
 def create_dataset() -> None:
-    df = pd.read_csv(DATA_PATH)
+    df = pd.read_csv(DATA_URI)
 
     x = df.drop(columns=["price"])
     y = df["price"]
