@@ -1,0 +1,11 @@
+pipeline {
+    agent { docker { image 'python:3.10.10-alpine' } }
+
+    stages {
+        stage('Create data') {
+            steps {
+                sh 'python3 lab2/jenkins/ml_pipeline/data_creation.py'
+            }
+        }
+    }
+}
