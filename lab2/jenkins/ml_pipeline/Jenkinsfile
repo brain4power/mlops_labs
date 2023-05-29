@@ -37,7 +37,7 @@ pipeline {
         }
         stage('Archive artifacts') {
             steps {
-                archiveArtifacts artifacts: 'lab2/models/**', followSymlinks: false
+                archiveArtifacts artifacts: 'lab2/models', followSymlinks: false
             }
         }
         stage('Cleaning') {
