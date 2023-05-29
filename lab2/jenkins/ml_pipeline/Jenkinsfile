@@ -35,9 +35,14 @@ pipeline {
                 sh 'python3 lab2/jenkins/ml_pipeline/model_testing.py'
             }
         }
+        stage('info2') {
+            steps {
+                sh 'ls'
+            }
+        }
         stage('Archive artifacts') {
             steps {
-                archiveArtifacts artifacts: 'lab2/models', followSymlinks: false
+                archiveArtifacts artifacts: 'models', followSymlinks: false
             }
         }
         stage('Cleaning') {
