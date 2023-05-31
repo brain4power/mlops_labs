@@ -41,7 +41,7 @@ def preprocess_data() -> None:
     x_test_scaled = preprocessors.transform(x_test)
     
     pd.DataFrame(x_train_scaled).to_csv(X_TRAIN_SCALED_PATH, index=False)
-    pd.DataFrame(x_test_scaled).to_csv(X_TEST_SCALED_PATH, index=False
+    pd.DataFrame(x_test_scaled).to_csv(X_TEST_SCALED_PATH, index=False)
 
 
 if __name__ == "__main__":
