@@ -1,3 +1,4 @@
+import contextlib
 import logging
 import shutil
 from datetime import datetime
@@ -10,9 +11,9 @@ logger.setLevel(LOG_LEVEL)
 
 
 def clean() -> None:
-    shutil.rmtree(TRAIN_DIR)
-    shutil.rmtree(TEST_DIR)
-    shutil.rmtree(MODEL_DIR)
+    for path_to_clean in (TRAIN_DIR, TEST_DIR, MODEL_DIR):
+        with contextlib.suppress(Exception):
+            shutil.rmtree(path_to_clean)
 
 
 if __name__ == "__main__":
