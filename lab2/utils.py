@@ -8,8 +8,7 @@ def read_ml_data(path) -> tuple:
     if not os.path.isfile(path):
         raise FileNotFoundError(path)
 
-    with open(path, "rb") as f:
-        data = np.load(path)
+    data = np.load(path)
 
     if data.size == 0:
         return np.ndarray(), np.ndarray()
