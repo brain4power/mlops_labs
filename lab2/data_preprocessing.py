@@ -13,19 +13,19 @@ from config import TEST_DIR, LOG_LEVEL, TEST_PATH, TRAIN_DIR, TRAIN_PATH, DATA_F
 logger = prepare_logger(LOG_LEVEL, "data_preprocessing")
 
 
-def get_target_data(df) -> pd.DataFrame:
-    y = df.drop(columns=["price"])
-    y = df["price"]
+def separate_target_data(df: pd.DataFrame, column_name: str) -> pd.DataFrame:
+    y = df[column_name]
+    df.drop(columns=[column_name], inplace=True)
     return y
 
 
-def to_numpy(df) -> np.ndarray:
+def to_numpy(df: pd.DataFrame) -> np.ndarray:
     y = df.values
     y = np.expand_dims(y, axis=1)
     return y
 
 
-def split_features(df) -> tuple:
+def split_features(df: pd.DataFrame) -> tuple:
     column_names = df.columns.to_list()
     cat_columns = []
     num_columns = []
@@ -47,8 +47,8 @@ def preprocess_data() -> None:
     x_train = pd.read_csv(TRAIN_PATH)
     x_test = pd.read_csv(TEST_PATH)
 
-    y_train = to_numpy(get_target_data(x_train))
-    y_test = to_numpy(get_target_data(x_test))
+    y_train = to_numpy(separate_target_data(x_train, "price"))
+    y_test = to_numpy(separate_target_data(x_test, "price"))
 
     num_cols, cat_cols = split_features(x_train)
 
