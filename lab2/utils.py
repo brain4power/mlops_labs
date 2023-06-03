@@ -6,7 +6,7 @@ import numpy as np
 
 def read_ml_data(path) -> tuple:
     if not os.path.isfile(path):
-        raise FileNotFoundError(path)
+        raise FileNotFoundError(f"Can't find file at {path}")
 
     data = np.load(path)
 
