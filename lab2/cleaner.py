@@ -1,5 +1,4 @@
 import shutil
-import logging
 import contextlib
 from datetime import datetime
 
