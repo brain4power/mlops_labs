@@ -1,25 +1,22 @@
-import logging
-import pickle
 from datetime import datetime
 
-import pandas as pd
+import os
+import pickle
+
 from sklearn.metrics import mean_squared_error as mse
 from sklearn.metrics import r2_score
 
-from config import LOG_LEVEL, MODEL_PATH, X_TEST_SCALED_PATH, Y_TEST_PATH
+from config import LOG_LEVEL, MODEL_PATH, TEST_DIR, DATA_FILE_NAME
+from utils import read_ml_data, prepare_logger
 
-logging.basicConfig()
-logger = logging.getLogger(__name__)
-logger.setLevel(LOG_LEVEL)
-
+logger = prepare_logger(LOG_LEVEL)
 
 def test_model() -> dict:
+
     with open(MODEL_PATH, "rb") as file:
         model = pickle.load(file)
 
-    x_test = pd.read_csv(X_TEST_SCALED_PATH)
-    y_test = pd.read_csv(Y_TEST_PATH)
-
+    x_test, y_test = read_ml_data(os.path.join(TEST_DIR, DATA_FILE_NAME))
     y_pred = model.predict(x_test)
 
     result = {

@@ -1,36 +1,27 @@
-import logging
 import os
 from datetime import datetime
 
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-from config import (DATA_URI, LOG_LEVEL, TEST_DIR, TRAIN_DIR, X_TEST_PATH,
-                    X_TRAIN_PATH, Y_TEST_PATH, Y_TRAIN_PATH)
+from config import (DATA_URI, LOG_LEVEL, TEST_DIR, TRAIN_DIR, TEST_PATH,
+                    TRAIN_PATH, TEST_SIZE, RANDOM_STATE)
 
-logging.basicConfig()
-logger = logging.getLogger(__name__)
-logger.setLevel(LOG_LEVEL)
+from utils import prepare_logger
 
+logger = prepare_logger(LOG_LEVEL)
 
-def create_dataset() -> None:
+def create_dataset(test_size=TEST_SIZE, random_state=RANDOM_STATE) -> None:
     df = pd.read_csv(DATA_URI)
 
-    x = df.drop(columns=["price"])
-    y = df["price"]
-
-    x_train, x_test, y_train, y_test = train_test_split(
-        x, y, test_size=0.3, random_state=26
-    )
+    data_train, data_test = train_test_split(
+        df, test_size=test_size, random_state=random_state)
 
     os.makedirs(TRAIN_DIR, exist_ok=True)
     os.makedirs(TEST_DIR, exist_ok=True)
 
-    x_train.to_csv(X_TRAIN_PATH, index=False)
-    y_train.to_csv(Y_TRAIN_PATH, index=False)
-    x_test.to_csv(X_TEST_PATH, index=False)
-    y_test.to_csv(Y_TEST_PATH, index=False)
-
+    data_train.to_csv(TRAIN_PATH, index=False)
+    data_test.to_csv(TEST_PATH, index=False)
 
 if __name__ == "__main__":
     start_time = datetime.now()

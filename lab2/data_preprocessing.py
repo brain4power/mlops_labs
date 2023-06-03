@@ -1,17 +1,27 @@
-import logging
+import os
+
 from datetime import datetime
 
+import numpy as np
 import pandas as pd
 from sklearn.compose import make_column_transformer
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
-from config import (LOG_LEVEL, X_TEST_PATH, X_TEST_SCALED_PATH, X_TRAIN_PATH,
-                    X_TRAIN_SCALED_PATH)
+from config import LOG_LEVEL, TRAIN_DIR, TEST_DIR, TEST_PATH, TRAIN_PATH, DATA_FILE_NAME
 
-logging.basicConfig()
-logger = logging.getLogger(__name__)
-logger.setLevel(LOG_LEVEL)
+from utils import prepare_logger
 
+logger = prepare_logger(LOG_LEVEL)
+
+def get_target_data(df) -> pd.DataFrame:
+    y = df.drop(columns=["price"])
+    y = df["price"]
+    return y
+
+def to_numpy(df) ->np.ndarray:
+    y = df.values
+    y = np.expand_dims(y, axis=1)
+    return y
 
 def split_features(df) -> tuple:
     column_names = df.columns.to_list()
@@ -25,10 +35,17 @@ def split_features(df) -> tuple:
             cat_columns += [column_name]
     return num_columns, cat_columns
 
+def save_data(features, targets, path) -> None:
+    data = np.concatenate((features, targets), axis=1)
+    with open(path, "wb") as f:
+        np.save(f, data)
 
 def preprocess_data() -> None:
-    x_train = pd.read_csv(X_TRAIN_PATH)
-    x_test = pd.read_csv(X_TEST_PATH)
+    x_train = pd.read_csv(TRAIN_PATH)
+    x_test = pd.read_csv(TEST_PATH)
+
+    y_train = to_numpy(get_target_data(x_train))
+    y_test = to_numpy(get_target_data(x_test))
 
     num_cols, cat_cols = split_features(x_train)
 
@@ -37,12 +54,11 @@ def preprocess_data() -> None:
         (OneHotEncoder(drop="if_binary", handle_unknown="ignore"), cat_cols)
     )
    
-    x_train_scaled = preprocessors.fit_transform(x_train)
-    x_test_scaled = preprocessors.transform(x_test)
-    
-    pd.DataFrame(x_train_scaled).to_csv(X_TRAIN_SCALED_PATH, index=False)
-    pd.DataFrame(x_test_scaled).to_csv(X_TEST_SCALED_PATH, index=False)
+    x_train = preprocessors.fit_transform(x_train)
+    x_test = preprocessors.transform(x_test)
 
+    save_data(x_train, y_train, os.path.join(TRAIN_DIR, DATA_FILE_NAME))
+    save_data(x_test, y_test, os.path.join(TEST_DIR, DATA_FILE_NAME))
 
 if __name__ == "__main__":
     start_time = datetime.now()
