@@ -18,8 +18,8 @@ def read_ml_data(path) -> tuple:
     return x, y
 
 
-def prepare_logger(level) -> logging.Logger:
+def prepare_logger(level, name) -> logging.Logger:
     logging.basicConfig()
-    logger = logging.getLogger(__name__)
+    logger = logging.getLogger(name)
     logger.setLevel(level)
     return logger

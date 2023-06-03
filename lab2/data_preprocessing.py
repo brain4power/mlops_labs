@@ -10,7 +10,7 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 # Project
 from config import TEST_DIR, LOG_LEVEL, TEST_PATH, TRAIN_DIR, TRAIN_PATH, DATA_FILE_NAME
 
-logger = prepare_logger(LOG_LEVEL)
+logger = prepare_logger(LOG_LEVEL, "data_preprocessing")
 
 
 def get_target_data(df) -> pd.DataFrame:

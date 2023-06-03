@@ -8,7 +8,7 @@ from xgboost import XGBRegressor
 # Project
 from config import TEST_DIR, LOG_LEVEL, MODEL_DIR, MODEL_PATH, DATA_FILE_NAME
 
-logger = prepare_logger(LOG_LEVEL)
+logger = prepare_logger(LOG_LEVEL, "model_preparation")
 
 
 def prepare_model() -> None:

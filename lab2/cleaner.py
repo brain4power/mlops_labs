@@ -5,10 +5,10 @@ from datetime import datetime
 
 # Project
 from config import TEST_DIR, LOG_LEVEL, MODEL_DIR, TRAIN_DIR
+from utils import prepare_logger
 
-logging.basicConfig()
-logger = logging.getLogger(__name__)
-logger.setLevel(LOG_LEVEL)
+
+logger = prepare_logger(LOG_LEVEL, "cleaner")
 
 
 def clean() -> None:

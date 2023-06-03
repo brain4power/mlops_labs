@@ -9,7 +9,7 @@ from sklearn.metrics import mean_squared_error as mse
 # Project
 from config import TEST_DIR, LOG_LEVEL, MODEL_PATH, DATA_FILE_NAME
 
-logger = prepare_logger(LOG_LEVEL)
+logger = prepare_logger(LOG_LEVEL, "model_testing")
 
 
 def test_model() -> dict:

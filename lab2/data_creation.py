@@ -17,7 +17,7 @@ from config import (
     RANDOM_STATE,
 )
 
-logger = prepare_logger(LOG_LEVEL)
+logger = prepare_logger(LOG_LEVEL, "data_creation")
 
 
 def create_dataset(test_size=TEST_SIZE, random_state=RANDOM_STATE) -> None:
