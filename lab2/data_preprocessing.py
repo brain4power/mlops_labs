@@ -40,8 +40,7 @@ def split_features(df) -> tuple:
 
 def save_data(features, targets, path) -> None:
     data = np.concatenate((features, targets), axis=1)
-    with open(path, "wb") as f:
-        np.save(f, data)
+    np.save(path, data)
 
 
 def preprocess_data() -> None:
