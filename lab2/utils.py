@@ -11,7 +11,7 @@ def read_ml_data(path) -> tuple:
     data = np.load(path)
 
     if data.size == 0:
-        return np.ndarray(), np.ndarray()
+        raise ValueError(f"Data loaded from {path} has 0 size.")
 
     x = data[:, :-1]
     y = data[:, -1]
