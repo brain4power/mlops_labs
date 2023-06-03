@@ -1,11 +1,11 @@
-import logging
 import os
+import logging
 
 LOG_LEVEL = logging.INFO
 
 DATA_URI = "https://raw.githubusercontent.com/tidyverse/ggplot2/main/data-raw/diamonds.csv"
 
-TEST_SIZE = .3
+TEST_SIZE = 0.3
 RANDOM_STATE = 26
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))

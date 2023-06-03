@@ -1,17 +1,17 @@
+import os
+import pickle
 from datetime import datetime
 
-import pickle
-import os
-
+from utils import read_ml_data, prepare_logger
 from xgboost import XGBRegressor
 
-from config import LOG_LEVEL, MODEL_DIR, MODEL_PATH, TEST_DIR, DATA_FILE_NAME
-from utils import read_ml_data, prepare_logger
+# Project
+from config import TEST_DIR, LOG_LEVEL, MODEL_DIR, MODEL_PATH, DATA_FILE_NAME
 
 logger = prepare_logger(LOG_LEVEL)
 
-def prepare_model() -> None:
 
+def prepare_model() -> None:
     x_train, y_train = read_ml_data(os.path.join(TEST_DIR, DATA_FILE_NAME))
 
     model = XGBRegressor(
@@ -32,6 +32,7 @@ def prepare_model() -> None:
 
     with open(MODEL_PATH, "wb") as file:
         pickle.dump(model, file)
+
 
 if __name__ == "__main__":
     start_time = datetime.now()

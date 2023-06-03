@@ -1,18 +1,18 @@
-from datetime import datetime
-
 import os
 import pickle
+from datetime import datetime
 
-from sklearn.metrics import mean_squared_error as mse
-from sklearn.metrics import r2_score
-
-from config import LOG_LEVEL, MODEL_PATH, TEST_DIR, DATA_FILE_NAME
 from utils import read_ml_data, prepare_logger
+from sklearn.metrics import r2_score
+from sklearn.metrics import mean_squared_error as mse
+
+# Project
+from config import TEST_DIR, LOG_LEVEL, MODEL_PATH, DATA_FILE_NAME
 
 logger = prepare_logger(LOG_LEVEL)
 
-def test_model() -> dict:
 
+def test_model() -> dict:
     with open(MODEL_PATH, "rb") as file:
         model = pickle.load(file)
 

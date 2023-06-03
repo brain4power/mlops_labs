@@ -1,9 +1,10 @@
-import contextlib
-import logging
 import shutil
+import logging
+import contextlib
 from datetime import datetime
 
-from config import LOG_LEVEL, MODEL_DIR, TEST_DIR, TRAIN_DIR
+# Project
+from config import TEST_DIR, LOG_LEVEL, MODEL_DIR, TRAIN_DIR
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
