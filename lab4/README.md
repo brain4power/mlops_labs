@@ -31,6 +31,53 @@ rm -rf lab4/data/new_file.csv
 dvc commit
 dvc push -r mydisc
 ```
+# Dataset transformations
+```shell
+cd lab4
+```
+- Transform "Age" values to categories and add new column
+```shell
+python transform_dataset.py \
+    --source_file_name titanic.csv \
+    --actions age_to_categories \
+    --column_names Age \
+    --rewrite
+```
+- Fill nan values at "Cabin" column by "not_indicated" value
+```shell
+python transform_dataset.py \
+    --source_file_name titanic.csv \
+    --actions fill_na_values \
+    --column_names Cabin \
+    --fill_na_action by_text \
+    --fill_na_text not_indicated \
+    --rewrite
+```
+- Fill nan Age column values by mean value
+```shell
+python transform_dataset.py \
+    --source_file_name titanic.csv \
+    --actions fill_na_values \
+    --column_names Age \
+    --fill_na_action mean \
+    --rewrite
+```
+- Make one-hot-encoding for columns Sex, Embarked, age_class
+```shell
+python transform_dataset.py \
+    --source_file_name titanic.csv \
+    --actions one_hot_encoding \
+    --column_names Sex,Embarked,age_class \
+    --rewrite
+```
+- Make one-hot-encoding for columns Sex, Embarked, age_class, Save to new file with name titanic_ohe.csv
+```shell
+python transform_dataset.py \
+    --source_file_name titanic.csv \
+    --actions one_hot_encoding \
+    --column_names Sex,Embarked,age_class \
+    --result_name titanic_ohe
+```
 ## Additional info
 
 [Google drive link](https://drive.google.com/drive/folders/1cBq5fewRBhq_HeDtDPgH4mbabiqSRbBo)
