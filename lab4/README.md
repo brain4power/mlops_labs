@@ -4,7 +4,7 @@
 
 Drive ID: 1cBq5fewRBhq_HeDtDPgH4mbabiqSRbBo
 
-Data (only train.csv): [Kaggle Titanic - Machine Learning from Disaster](https://www.kaggle.com/competitions/titanic/data?select=train.csv)
+Download csv (only train.csv): [Kaggle Titanic - Machine Learning from Disaster](https://www.kaggle.com/competitions/titanic/data?select=train.csv)
 
 _____
 
