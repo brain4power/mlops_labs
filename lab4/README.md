@@ -78,6 +78,25 @@ python transform_dataset.py \
     --column_names Sex,Embarked,age_class \
     --result_name titanic_ohe
 ```
+## Switch between different dataset versions
+Show git log
+```shell
+git log --oneline
+```
+```shell
+96fcf5f feat: dataset: Fill nan Age column values by mean value
+aab1490 feat: dataset: Fill nan values at "Cabin" column by "not_indicated" value
+eccd73a feat: dataset: Transform "Age" values to categories and add new column
+999ac65 feat: default titanic dataset
+```
+Find the hash of the desired commit and checkout to it
+```shell
+git checkout 999ac65
+```
+Pull data changes from dvc storage
+```shell
+dvc pull -r mydisc
+```
 ## Additional info
 
 [Google drive link](https://drive.google.com/drive/folders/1cBq5fewRBhq_HeDtDPgH4mbabiqSRbBo)
