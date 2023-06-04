@@ -25,7 +25,11 @@ dvc commit
 ```shell
 dvc push -r mydisc
 ```
-5. remove file
+5. Save dvc changes to git
+```shell
+git commit -m "some message"
+```
+6. remove file
 ```shell
 rm -rf lab4/data/new_file.csv
 dvc commit
