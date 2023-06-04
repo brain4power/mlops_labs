@@ -26,6 +26,9 @@ There will be 4 sets of scripts:
 
 	$ bash ./pipeline.sh
 
+## Lab2:
+Follow the internal [Readme](lab2/readme.md)
+
 ## Lab3:
 Follow the internal [Readme](lab3/readme.md)
 
