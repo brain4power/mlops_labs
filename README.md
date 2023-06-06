@@ -32,6 +32,9 @@ Follow the internal [Readme](lab2/readme.md)
 ## Lab3:
 Follow the internal [Readme](lab3/readme.md)
 
+## Lab4:
+Follow the internal [Readme](lab4/readme.md)
+
 ## Authors:
 
 - Aleksei Gukov ([brain4power](https://github.com/brain4power))
